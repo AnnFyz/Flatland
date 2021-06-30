@@ -18,7 +18,7 @@ var machineConfig = {
   maxCount: 5,
   minSize: 20,
   maxSize: 30,
-  lifetime: 20000,
+  lifetime: 15000,
   color1: [255, 0, 255],
   color1Opacity: 0.7,
   color2: [0, 0, 0],
