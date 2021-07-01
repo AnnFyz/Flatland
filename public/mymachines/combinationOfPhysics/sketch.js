@@ -29,11 +29,15 @@ let gravitation;
 let friction = 0.7;
 let lastspawn = 0;
 let punkt = 1;
-
+let isCollision = false;
+let lettersArray = ["☹", "😞", "😡", "😱", "😵", "😰"];
+let myIndex = 0;
 class Machine extends defaultMachine {
   setup() {
     this.setPenDown();
-    this.setType(MachineType.CIRCLE);
+    this.setType(MachineType.TEXT);
+    this.setStroke(0, random(255), random(100, 255), 120);
+    this.setText(lettersArray[myIndex]);
     this.rotationspeed = random(-0.05, 0.05);
     this.speed = 10;
     this.velocity = createVector(random(-5, 5), random(-5, 5));
@@ -47,14 +51,14 @@ class Machine extends defaultMachine {
     this.vel = p5.Vector.random2D();
     this.vel.mult(random(0.5, 2));
     this.acc = createVector(0, 0);
-    this.size = random(15, 70);
+    this.size = random(50, 170);
     this.r = sqrt(this.size) * 10;
   }
 
   move() {
-    // if (this.liquidContains(this.pos)) {
-    //   this.vel.mult(0.1);
-    // }
+    if (this.liquidContains(this.pos)) {
+      this.vel.mult(0.1);
+    }
 
     this.color1 = color(
       lerp(
@@ -103,7 +107,7 @@ class Machine extends defaultMachine {
             flatland.machinesLocal[i].pos.y = ty;
             //this.color1 = color(random(255), random(255), random(255));
 
-            let p = createP("nulldimensionalen Punkt №:" + punkt);
+            let p = createP("Begegnung №:" + punkt);
             p.style("font-size", "16px");
             p.position(
               flatland.machinesLocal[i].pos.x + windowWidth / 2,
@@ -203,11 +207,10 @@ class Machine extends defaultMachine {
 
 let gui;
 let flatland;
-let isCollision = false;
-let drag = 0.15;
 
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
+
   flatland = new Flatland(); // connect to the flatland server
   initGui();
   initSocketIO(flatlandConfig.server);

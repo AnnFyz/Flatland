@@ -30,19 +30,19 @@ var machineConfig = {
 class Machine extends defaultMachine {
   setup() {
     // initialize your machine
-    this.setType(MachineType.POINT);
+    this.setType(MachineType.CIRCLE);
     this.setSize(random(0, 100));
     this.setLifetime(random(0, machineConfig.lifetime));
-    this.setStroke(0, random(255), random(100, 255), 128);
-    this.setFill(random(255), random(255), random(255), 128);
+    this.setStroke(0, random(255), random(100, 255), 120);
+    this.setFill(0, random(150), random(100, 255), 0);
     this.setPenDown();
     //this.penDown();
-    this.myown_rotationspeed = random(-0.001, 0.001);
-    this.myownrandomradius = 100;
-    var randomindex = int(random(grid.length));
-    this.myownvariable_centerx = grid[index].x;
-    this.myownvariable_centery = grid[index].y;
-    index = (index + 1) % grid.length;
+    this.myown_rotationspeed = random(-0.01, 0.01);
+    this.myownrandomradius = 50;
+    var randomindex = int(random(liquid.length));
+    this.myownvariable_centerx = centerOfSystemX;
+    this.myownvariable_centery = centerOfSystemY;
+    index = (index + 1) % liquid.length;
   }
   move() {
     // how does your machine move
@@ -63,22 +63,20 @@ let flatland;
 // my own  gloabal variables
 let maxpoints = 7;
 let index = 0;
-let grid = [];
+let liquid = [];
 
+let centerOfSystemX = 0;
+let centerOfSystemY = 0;
 // local stuff
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
-  // create a global grid
-  for (var a = 0; a < TWO_PI; a += 10) {
-    for (var bb = 0; bb < maxpoints; bb++) {
-      let x = 150 * cos(a);
-      var y = 150 * sin(a);
-      var v = createVector(x, y);
-      grid.push(v);
-    }
+  // array of bubbles
+  for (var bb = 0; bb < maxpoints; bb++) {
+    var v = createVector(centerOfSystemX, centerOfSystemY);
+    liquid.push(v);
   }
 
-  machineConfig.maxCount = grid.length;
+  machineConfig.maxCount = liquid.length;
 
   flatland = new Flatland(); // connect to the flatland server
   initGui();
@@ -86,5 +84,9 @@ function setup() {
 }
 
 function draw() {
+  if (mouseIsPressed) {
+    centerOfSystemX = mouseX - width / 2;
+    centerOfSystemY = mouseY - height / 2;
+  }
   flatland.update(); // update + draw flatland
 }
