@@ -14,7 +14,7 @@ var flatlandConfig = {
 };
 
 var machineConfig = {
-  name: "liquid",
+  name: "wave",
   maxCount: 10,
   minSize: 20,
   maxSize: 30,
@@ -26,33 +26,34 @@ var machineConfig = {
   pendown: false,
 };
 
+let angles = [];
+let angleV = [];
+let r = 10;
 // ---------------------------------------------------------------
 class Machine extends defaultMachine {
   setup() {
     // initialize your machine
     this.setType(MachineType.CIRCLE);
-    this.setSize(random(0, 100));
-    this.setLifetime(random(0, machineConfig.lifetime));
-    this.setStroke(0, random(255), random(100, 255), 120);
-    this.setFill(0, random(150), random(100, 255), 0);
-    this.setPenDown();
-    //this.penDown();
-    this.myown_rotationspeed = random(-0.01, 0.01);
-    this.myownrandomradius = 50;
-    var randomindex = int(random(liquid.length));
-    this.myownvariable_centerx = centerOfSystemX;
-    this.myownvariable_centery = centerOfSystemY;
-    index = (index + 1) % liquid.length;
+    let total = floor(width / (r * 2));
+    for (let i = 0; i < total + 1; i++) {
+      angles[i] = map(i, 0, total, 0, 2 * TWO_PI);
+      // angleV[i] = 0.01 + i / 100;
+    }
   }
+
   move() {
-    // how does your machine move
-    translate(-20, -100);
-    this.setPosition(
-      this.myownvariable_centerx +
-        cos(millis() * this.myown_rotationspeed) * this.myownrandomradius,
-      this.myownvariable_centery +
-        sin(millis() * this.myown_rotationspeed) * this.myownrandomradius
-    );
+    beginShape();
+    for (let i = 0; i < angles.length; i++) {
+      let y = map(sin(angles[i]), -1, 1, -200, 200);
+      strokeWeight(4);
+      let x = map(i, 0, angles.length, -300, 300);
+      // line(x, 0, x, y);
+      circle(x, y, r * 2);
+      // vertex(x,y);
+      angles[i] += 0.02;
+      // angles[i] += angleV[i];
+    }
+    endShape();
   }
 }
 // --------------------------------------------------------------
