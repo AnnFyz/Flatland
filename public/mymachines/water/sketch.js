@@ -4,7 +4,7 @@
 
 var flatlandConfig = {
   server: "https://flatland.earth",
-  land: "default",
+  land: "group3",
   updateIntervall: 30,
   spawnIntervall: 40,
   debug: false,
@@ -19,39 +19,27 @@ var machineConfig = {
   minSize: 20,
   maxSize: 30,
   lifetime: 10000, // forever...!
-  color1: [0, 200, 255],
-  color1Opacity: 0.7,
-  color2: [0, 200, 255],
-  color2Opacity: 0.7,
+  color1: [0, 0, 255],
+  color1Opacity: 0.5,
+  color2: [255, 0, 255],
+  color2Opacity: 0,
   pendown: true,
 };
 
-let angles = [];
-let angleV = [];
-let r = 20;
 // ---------------------------------------------------------------
 class Machine extends defaultMachine {
   setup() {
     this.setPenDown();
-    this.setType(MachineType.CIRCLE);
+    this.setType(MachineType.RECT);
     this.setLifetime(10000000); //forever
   }
 
   move() {
-    for (let i = 0; i < angles.length; i++) {
-      let y = map(sin(angles[i]), -1, 1, -200, 200);
-      strokeWeight(4);
-      let x = map(i, 0, angles.length, -300, 300);
-      //line(x, 0, x, y);
-      this.setPosition(x, y);
-      this.setSize(r * 2);
-      circle(x, y, r * 2);
-
-      angles[i] += 0.002;
-      // angles[i] += angleV[i];
-    }
+    this.setPosition(-width / 2 + this.size / 2, height / 2 - this.size / 2);
+    this.setSize(250);
   }
 }
+
 // --------------------------------------------------------------
 
 let gui;
@@ -62,12 +50,6 @@ function setup() {
   flatland = new Flatland(); // connect to the flatland server
   initGui();
   initSocketIO(flatlandConfig.server);
-
-  let total = floor(width / (r * 2));
-  for (let i = 0; i < total + 1; i++) {
-    angles[i] = map(i, 0, total, 0, 2 * TWO_PI);
-    // angleV[i] = 0.01 + i / 100;
-  }
 }
 
 function draw() {

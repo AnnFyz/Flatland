@@ -4,7 +4,7 @@
 
 var flatlandConfig = {
   server: "https://flatland.earth",
-  land: "default",
+  land: "group3",
   updateIntervall: 40,
   spawnIntervall: 1,
   debug: true,
@@ -20,7 +20,7 @@ var machineConfig = {
   maxSize: 30,
   lifetime: 15000,
   color1: [255, 0, 255],
-  color1Opacity: 0.7,
+  color1Opacity: 0.2,
   color2: [0, 0, 0],
   color2Opacity: 0.7,
   pendown: true,
@@ -57,8 +57,10 @@ class Machine extends defaultMachine {
   }
 
   move() {
+    rect(-width / 2, -height / 2 - 250, 250, 250);
     if (this.liquidContains(this.pos)) {
-      this.vel.mult(0.1);
+      console.log("Test");
+      this.vel.mult(0.01);
     }
 
     this.color1 = color(
@@ -161,8 +163,11 @@ class Machine extends defaultMachine {
     }
   }
   // Is the ball in the Liquid?
+  //rect(-width / 2, height / 2 - 250, 250, 250);
   liquidContains(b) {
-    return b.x > 0 && b.x < 0 + 400 && b.y > -50 && b.y < -50 + 400;
+    //return b.x > -125 && b.x < 125 && b.y > -125 && b.y < 125;
+    return b.x > -1000 && b.x < 1000 && b.y > -1000 && b.y < 1000;
+    //return this.pos.x == coordinateX && this.pos.y == coordinateY;
   }
 
   newtonFunction() {
@@ -208,15 +213,45 @@ class Machine extends defaultMachine {
 
 let gui;
 let flatland;
-
+//wasser
+let angles = [];
+let angleV = [];
+let r = 10;
+let coordinateX;
+let coordinateY;
 function setup() {
   createCanvas(windowWidth, windowHeight, WEBGL);
 
   flatland = new Flatland(); // connect to the flatland server
   initGui();
   initSocketIO(flatlandConfig.server);
+
+  let total = floor(width / (r * 3));
+  for (let i = 0; i < total + 1; i++) {
+    angles[i] = map(i, 0, total, 0, 2 * TWO_PI);
+    // angleV[i] = 0.01 + i / 100;
+    //rect(-width / 2 + 250, height / 2 - 250, 250, 250);
+  }
 }
 
 function draw() {
   flatland.update(); // update + draw flatland
+  fill(random(255), 255, random(200, 255), 0);
+  strokeWeight(2);
+  rect(-width / 2, height / 2 - 250, 250, 250);
+  for (let i = 0; i < angles.length; i++) {
+    let coordinateY = map(sin(angles[i]), -1, 1, -150, 150);
+    noStroke();
+    fill(0, 255, random(200, 255), random(200, 255));
+    let coordinateX = map(i, 0, angles.length, -200, 200);
+    //line(x, 0, x, y);
+    //console.log(coordinateX, coordinateY);
+    push();
+    translate(0, 100);
+
+    circle(coordinateX, coordinateY / 2, r * 2);
+    pop();
+    angles[i] += 0.002;
+    // angles[i] += angleV[i];
+  }
 }
