@@ -31,7 +31,7 @@ let lastspawn = 0;
 let punkt = 1;
 let isCollision = false;
 let lettersArray = ["☹", "😞", "😡", "😱", "😵", "😰"];
-let myIndex = 0;
+let myIndex = int(random(lettersArray.length));
 class Machine extends defaultMachine {
   setup() {
     this.setPenDown();
