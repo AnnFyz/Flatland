@@ -30,13 +30,14 @@ let friction = 0.7;
 let lastspawn = 0;
 let punkt = 1;
 let isCollision = false;
-let lettersArray = ["☹", "😞", "😡", "😱", "😵", "😰"];
-let myIndex = int(random(lettersArray.length));
+
 class Machine extends defaultMachine {
   setup() {
     this.setPenDown();
     this.setType(MachineType.TEXT);
     this.setStroke(0, random(255), random(100, 255), 120);
+    let lettersArray = ["☹", "😞", "😡", "😱", "😵", "😰"];
+    let myIndex = int(random(lettersArray.length));
     this.setText(lettersArray[myIndex]);
     this.rotationspeed = random(-0.05, 0.05);
     this.speed = 10;
@@ -51,7 +52,7 @@ class Machine extends defaultMachine {
     this.vel = p5.Vector.random2D();
     this.vel.mult(random(0.5, 2));
     this.acc = createVector(0, 0);
-    this.size = random(50, 170);
+    this.size = random(50, 130);
     this.r = sqrt(this.size) * 10;
   }
 
