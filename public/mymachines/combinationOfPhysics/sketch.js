@@ -36,7 +36,7 @@ class Machine extends defaultMachine {
     this.setPenDown();
     this.setType(MachineType.TEXT);
     this.setStroke(0, random(255), random(100, 255), 120);
-    let lettersArray = ["☹", "😞", "😡", "😱", "😵", "😰"];
+    let lettersArray = ["☹", " ͡❛ ͜ʖ ͡❛", "😡", "😱", "😵", "😰"];
     let myIndex = int(random(lettersArray.length));
     this.setText(lettersArray[myIndex]);
     this.rotationspeed = random(-0.05, 0.05);
@@ -57,7 +57,9 @@ class Machine extends defaultMachine {
   }
 
   move() {
-    rect(-width / 2, -height / 2 - 250, 250, 250);
+    strokeWeight(3);
+    noFill();
+    rect(-width / 2, height / 2 - 250, 250, 250);
     if (this.liquidContains(this.pos)) {
       console.log("Test");
       this.vel.mult(0.01);
@@ -166,7 +168,12 @@ class Machine extends defaultMachine {
   //rect(-width / 2, height / 2 - 250, 250, 250);
   liquidContains(b) {
     //return b.x > -125 && b.x < 125 && b.y > -125 && b.y < 125;
-    return b.x > -1000 && b.x < 1000 && b.y > -1000 && b.y < 1000;
+    return (
+      b.x > -width / 2 &&
+      b.x < -width / 2 + 200 &&
+      b.y > height / 2 - 200 &&
+      b.y < height / 2
+    );
     //return this.pos.x == coordinateX && this.pos.y == coordinateY;
   }
 
@@ -238,16 +245,22 @@ function draw() {
   flatland.update(); // update + draw flatland
   fill(random(255), 255, random(200, 255), 0);
   strokeWeight(2);
-  rect(-width / 2, height / 2 - 250, 250, 250);
+  //rect(-width / 2, height / 2 - 250, 250, 250);
   for (let i = 0; i < angles.length; i++) {
-    let coordinateY = map(sin(angles[i]), -1, 1, -150, 150);
+    let coordinateY = map(sin(angles[i]), -1, 1, height / 2 - 70, height / 2);
     noStroke();
     fill(0, 255, random(200, 255), random(200, 255));
-    let coordinateX = map(i, 0, angles.length, -200, 200);
+    let coordinateX = map(
+      i,
+      0,
+      angles.length,
+      -width / 2 + 10,
+      -width / 2 + 250
+    );
     //line(x, 0, x, y);
     //console.log(coordinateX, coordinateY);
     push();
-    translate(0, 100);
+    translate(0, -10);
 
     circle(coordinateX, coordinateY / 2, r * 2);
     pop();
