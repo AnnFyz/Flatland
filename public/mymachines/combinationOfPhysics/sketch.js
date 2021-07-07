@@ -59,7 +59,7 @@ class Machine extends defaultMachine {
   move() {
     strokeWeight(3);
     noFill();
-    rect(-width / 2, height / 2 - 250, 250, 250);
+    //rect(-width / 2, height / 2 - 250, 250, 250);
     if (this.liquidContains(this.pos)) {
       console.log("Test");
       this.vel.mult(0.01);
